@@ -3,85 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Brain Creator | Cloud Drive Edition</title>
+    <title>AI Brain Creator | Cloud Drive Professional</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="account-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h3>Scegli un account</h3>
-            <p>per proseguire su Brain Creator Cloud</p>
-            <div class="account-list">
-                <div class="account-item" onclick="selectAccount('utente.principale@gmail.com')">
-                    <div class="avatar">U</div>
-                    <div class="details">
-                        <span class="name">Utente Principale</span>
-                        <span class="email">utente.principale@gmail.com</span>
-                    </div>
-                </div>
-                <div class="account-item" onclick="selectAccount('lavoro.dev@company.com')">
-                    <div class="avatar">L</div>
-                    <div class="details">
-                        <span class="name">Lavoro Dev</span>
-                        <span class="email">lavoro.dev@company.com</span>
-                    </div>
-                </div>
-                <div class="account-item use-another">
-                    <span>Utilizza un altro account</span>
-                </div>
-            </div>
-            <button class="close-modal" onclick="closeModal()">Annulla</button>
-        </div>
-    </div>
-
     <div class="app-container">
         <aside class="sidebar">
-            <h2>Cloud Storage</h2>
+            <div class="brand">
+                <h2>Brain <span class="highlight">Cloud</span></h2>
+            </div>
+            
             <div class="drive-integration">
-                <button id="drive-connect" class="secondary-btn">Connetti Google Drive</button>
+                <button id="drive-connect" class="secondary-btn">Connetti Google Account</button>
                 <span id="drive-status">Stato: Disconnesso</span>
             </div>
 
             <hr class="separator">
 
-            <h2>Brain Config</h2>
-            <div class="input-group">
-                <label for="brain-name">Nome del Cervello</label>
-                <input type="text" id="brain-name" placeholder="Es: Neural-X...">
+            <div class="config-section">
+                <div class="input-group">
+                    <label>Nome del Cervello</label>
+                    <input type="text" id="brain-name" placeholder="es. Neural-Core-V1">
+                </div>
+                
+                <div class="input-group">
+                    <label>Modello Logico</label>
+                    <select id="brain-role">
+                        <option value="analyst">Analista Dati</option>
+                        <option value="creative">Generatore Creativo</option>
+                        <option value="logic">Motore Logico</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Creatività (Temp)</label>
+                    <input type="range" id="temp-slider" min="0" max="100" value="70">
+                </div>
             </div>
-            <div class="input-group">
-                <label for="brain-role">Ruolo / Personalità</label>
-                <select id="brain-role">
-                    <option value="assistant">Assistente Analitico</option>
-                    <option value="creative">Genio Creativo</option>
-                    <option value="coder">Sviluppatore Esperto</option>
-                </select>
+
+            <div class="progress-container" id="upload-progress" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="fill-bar"></div>
+                </div>
+                <span class="progress-text">Sincronizzazione...</span>
             </div>
-            <button id="create-btn" class="primary-btn">Sincronizza su Drive</button>
+
+            <button id="create-btn" class="primary-btn">Esegui Deploy su Drive</button>
         </aside>
 
         <main class="main-content">
-            <header>
-                <h1>AI Brain <span class="highlight">Creator</span></h1>
-                <p>Ospita il tuo agente neurale direttamente sul tuo Google Drive personale.</p>
-            </header>
-
-            <div class="canvas-area">
-                <div id="brain-status" class="status-card">
-                    <div class="pulse-ring"></div>
-                    <p id="status-text">In attesa di connessione cloud...</p>
+            <div class="canvas">
+                <div class="status-monitor">
+                    <div class="pulse-ring" id="main-ring"></div>
+                    <h1 id="status-title">Sistema Offline</h1>
+                    <p id="status-desc">Effettua l'accesso per inizializzare il cloud.</p>
                 </div>
-                
-                <div class="terminal">
-                    <div class="terminal-header">Sistema di Backup Cloud</div>
+
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <span>Console di Sistema v1.0.4</span>
+                    </div>
                     <div id="log-output" class="log-content">
-                        > In attesa di autorizzazione Google...
+                        > Inizializzazione moduli Google SDK...
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
     <script src="script.js"></script>
 </body>
 </html>
