@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Brain Creator | Cloud Drive Professional</title>
+    <title>AI Brain Creator | Cloud Drive Pro</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -11,11 +11,11 @@
     <div class="app-container">
         <aside class="sidebar">
             <div class="brand">
-                <h2>Brain <span class="highlight">Cloud</span></h2>
+                <h2>Brain <span class="highlight">Creator</span></h2>
             </div>
             
             <div class="drive-integration">
-                <button id="drive-connect" class="secondary-btn">Connetti Google Account</button>
+                <button id="drive-connect" class="secondary-btn">Log-in con Google</button>
                 <span id="drive-status">Stato: Disconnesso</span>
             </div>
 
@@ -24,48 +24,46 @@
             <div class="config-section">
                 <div class="input-group">
                     <label>Nome del Cervello</label>
-                    <input type="text" id="brain-name" placeholder="es. Neural-Core-V1">
+                    <input type="text" id="brain-name" placeholder="es. Brain-Alpha-9">
                 </div>
                 
                 <div class="input-group">
-                    <label>Modello Logico</label>
+                    <label>Tipo di Intelligenza</label>
                     <select id="brain-role">
-                        <option value="analyst">Analista Dati</option>
-                        <option value="creative">Generatore Creativo</option>
-                        <option value="logic">Motore Logico</option>
+                        <option value="assistant">Assistente Personale</option>
+                        <option value="researcher">Ricercatore Scientifico</option>
+                        <option value="creative">Scrittore Creativo</option>
                     </select>
                 </div>
 
                 <div class="input-group">
-                    <label>Creatività (Temp)</label>
+                    <label>Temperatura Neurale</label>
                     <input type="range" id="temp-slider" min="0" max="100" value="70">
                 </div>
             </div>
 
-            <div class="progress-container" id="upload-progress" style="display: none;">
+            <div id="upload-progress" class="progress-container" style="display: none;">
                 <div class="progress-bar">
                     <div class="progress-fill" id="fill-bar"></div>
                 </div>
-                <span class="progress-text">Sincronizzazione...</span>
+                <span class="progress-text">Caricamento su Cloud...</span>
             </div>
 
-            <button id="create-btn" class="primary-btn">Esegui Deploy su Drive</button>
+            <button id="create-btn" class="primary-btn">Salva Cervello su Drive</button>
         </aside>
 
         <main class="main-content">
             <div class="canvas">
                 <div class="status-monitor">
                     <div class="pulse-ring" id="main-ring"></div>
-                    <h1 id="status-title">Sistema Offline</h1>
-                    <p id="status-desc">Effettua l'accesso per inizializzare il cloud.</p>
+                    <h1 id="status-title">Sistema in Standby</h1>
+                    <p id="status-desc">Connetti il tuo account Drive per iniziare la creazione.</p>
                 </div>
 
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <span>Console di Sistema v1.0.4</span>
-                    </div>
+                <div class="terminal">
+                    <div class="terminal-header">Sistema Centrale v1.0.5</div>
                     <div id="log-output" class="log-content">
-                        > Inizializzazione moduli Google SDK...
+                        > Inizializzazione protocolli Google...
                     </div>
                 </div>
             </div>
