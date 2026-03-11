@@ -8,6 +8,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="account-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Scegli un account</h3>
+            <p>per proseguire su Brain Creator Cloud</p>
+            <div class="account-list">
+                <div class="account-item" onclick="selectAccount('utente.principale@gmail.com')">
+                    <div class="avatar">U</div>
+                    <div class="details">
+                        <span class="name">Utente Principale</span>
+                        <span class="email">utente.principale@gmail.com</span>
+                    </div>
+                </div>
+                <div class="account-item" onclick="selectAccount('lavoro.dev@company.com')">
+                    <div class="avatar">L</div>
+                    <div class="details">
+                        <span class="name">Lavoro Dev</span>
+                        <span class="email">lavoro.dev@company.com</span>
+                    </div>
+                </div>
+                <div class="account-item use-another">
+                    <span>Utilizza un altro account</span>
+                </div>
+            </div>
+            <button class="close-modal" onclick="closeModal()">Annulla</button>
+        </div>
+    </div>
+
     <div class="app-container">
         <aside class="sidebar">
             <h2>Cloud Storage</h2>
@@ -31,10 +58,6 @@
                     <option value="coder">Sviluppatore Esperto</option>
                 </select>
             </div>
-            <div class="input-group">
-                <label for="temp-slider">Temperatura (Creatività)</label>
-                <input type="range" id="temp-slider" min="0" max="100" value="70">
-            </div>
             <button id="create-btn" class="primary-btn">Sincronizza su Drive</button>
         </aside>
 
@@ -53,7 +76,7 @@
                 <div class="terminal">
                     <div class="terminal-header">Sistema di Backup Cloud</div>
                     <div id="log-output" class="log-content">
-                        > Pronto per la connessione...
+                        > In attesa di autorizzazione Google...
                     </div>
                 </div>
             </div>
