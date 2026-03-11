@@ -1,72 +1,139 @@
 /**
- * Brain Creator - Logic Engine
- * Gestisce l'interazione tra UI e simulazione Google Drive
+ * Brain Creator - Metodo di Gestione Stato e Sincronizzazione Cloud
  */
 
-let isConnectedToDrive = false;
+const state = {
+    isConnected: false,
+    activeAccount: null,
+    isDeploying: false
+};
 
-// Riferimenti DOM
-const logOutput = document.getElementById('log-output');
-const driveStatus = document.getElementById('drive-status');
-const statusText = document.getElementById('status-text');
-const btnCreate = document.getElementById('create-btn');
+// Elementi del DOM
+const elements = {
+    modal: document.getElementById('account-modal'),
+    log: document.getElementById('log-output'),
+    driveStatus: document.getElementById('drive-status'),
+    statusText: document.getElementById('status-text'),
+    btnCreate: document.getElementById('create-btn'),
+    btnConnect: document.getElementById('drive-connect'),
+    progressContainer: document.querySelector('.progress-container'),
+    progressFill: document.querySelector('.progress-fill'),
+    ring: document.querySelector('.pulse-ring')
+};
 
 /**
- * Metodo per aggiungere log al terminale di sistema
+ * Gestisce l'output del terminale simulato
  */
-function addLog(msg) {
-    const p = document.createElement('div');
-    p.textContent = `> [${new Date().toLocaleTimeString()}] ${msg}`;
-    logOutput.appendChild(p);
-    logOutput.scrollTop = logOutput.scrollHeight;
+function writeLog(message, type = 'info') {
+    const entry = document.createElement('div');
+    const timestamp = new Date().toLocaleTimeString();
+    entry.style.color = type === 'error' ? 'var(--accent-error)' : 'var(--accent-success)';
+    entry.textContent = `> [${timestamp}] ${message}`;
+    elements.log.appendChild(entry);
+    elements.log.scrollTop = elements.log.scrollHeight;
 }
 
 /**
- * Metodo per gestire l'autenticazione simulata con Google Drive
+ * Gestione Modale Account
  */
-function connectDrive() {
-    addLog("Avvio handshake con le API di Google...");
+function openPicker() {
+    if (state.isDeploying) return;
+    elements.modal.style.display = 'flex';
+    writeLog("Richiesta autenticazione OAuth 2.0...");
+}
+
+function closeModal() {
+    elements.modal.style.display = 'none';
+}
+
+/**
+ * Selezione Account e inizializzazione sessione
+ */
+function selectAccount(email) {
+    state.isConnected = true;
+    state.activeAccount = email;
+    closeModal();
+
+    elements.driveStatus.textContent = `Cloud: ${email}`;
+    elements.driveStatus.style.color = 'var(--accent-success)';
+    elements.statusText.textContent = "Sincronizzato. Pronto per l'upload.";
     
-    setTimeout(() => {
-        isConnectedToDrive = true;
-        driveStatus.textContent = "Stato: Connesso (Account Google)";
-        driveStatus.style.color = "#34a853";
-        addLog("Accesso a Google Drive autorizzato.");
-        statusText.textContent = "Pronto per la sincronizzazione.";
-    }, 1200);
+    writeLog(`Token rinfrescato per ${email}`, 'info');
 }
 
 /**
- * Metodo principale per salvare la configurazione del cervello su Drive
+ * Simulazione avanzamento barra di progresso
  */
-function syncBrainToDrive() {
-    if (!isConnectedToDrive) {
-        addLog("ERRORE: Connessione a Drive richiesta per l'hosting.");
+async function updateProgress(duration) {
+    elements.progressContainer.style.display = 'block';
+    let progress = 0;
+    const interval = 50; // ms
+    const step = 100 / (duration / interval);
+
+    return new Promise((resolve) => {
+        const timer = setInterval(() => {
+            progress += step;
+            elements.progressFill.style.width = `${Math.min(progress, 100)}%`;
+            if (progress >= 100) {
+                clearInterval(timer);
+                resolve();
+            }
+        }, interval);
+    });
+}
+
+/**
+ * Metodo principale di sincronizzazione (Deploy del Cervello)
+ */
+async function syncBrain() {
+    // Validazione iniziale
+    if (!state.isConnected) {
+        writeLog("ERRORE: Accesso a Google Drive non autorizzato.", "error");
+        openPicker();
         return;
     }
 
-    const brainName = document.getElementById('brain-name').value || "Unnamed_Brain";
-    const brainRole = document.getElementById('brain-role').value;
+    const brainName = document.getElementById('brain-name').value.trim();
+    if (!brainName) {
+        writeLog("ERRORE: Specificare un nome per il Core Neurale.", "error");
+        return;
+    }
+
+    // Lock UI
+    state.isDeploying = true;
+    elements.btnCreate.disabled = true;
+    elements.btnCreate.textContent = "Sincronizzazione...";
     
-    btnCreate.disabled = true;
-    btnCreate.textContent = "Sincronizzazione...";
-    addLog(`Generazione file di configurazione: ${brainName}.json`);
+    writeLog(`Inizio pacchettizzazione '${brainName}'...`);
 
-    // Simulazione processo di upload cloud
-    setTimeout(() => addLog("Allocazione spazio su Google Drive..."), 800);
-    setTimeout(() => addLog("Invio pacchetti neurali al server remoto..."), 1800);
+    // Fase 1: Preparazione JSON
+    await new Promise(r => setTimeout(r, 800));
+    writeLog("Compilazione parametri architettura...");
 
+    // Fase 2: Upload con barra di progresso
+    writeLog(`Caricamento in corso su Drive: /Apps/BrainCreator/${brainName}.json`);
+    await updateProgress(3000);
+
+    // Fase 3: Finalizzazione
+    writeLog("Verifica integrità file cloud completata.");
+    
     setTimeout(() => {
-        addLog(`SUCCESSO: Il cervello '${brainName}' è ospitato su Drive.`);
-        statusText.textContent = `Ospitato su Drive: ${brainName}`;
-        btnCreate.disabled = false;
-        btnCreate.textContent = "Aggiorna Configurazione";
-        
-        // Feedback visivo nel canvas
-        document.querySelector('.pulse-ring').style.background = "#34a853";
-    }, 3500);
+        state.isDeploying = false;
+        elements.btnCreate.disabled = false;
+        elements.btnCreate.textContent = "Aggiorna Configurazione";
+        elements.statusText.textContent = `Online: ${brainName}`;
+        elements.ring.style.background = 'var(--accent-success)';
+        elements.progressContainer.style.display = 'none';
+        elements.progressFill.style.width = '0%';
+        writeLog(`DEPLOIEMENT COMPLETATO: Cervello attivo su account ${state.activeAccount}`);
+    }, 500);
 }
 
-// Inizializzazione Event Listeners
-document.getElementById('drive-connect').addEventListener('click', connectDrive);
-btnCreate.addEventListener('click', syncBrainToDrive);
+// Inizializzazione Listener
+elements.btnConnect.addEventListener('click', openPicker);
+elements.btnCreate.addEventListener('click', syncBrain);
+
+// Chiudi modale cliccando fuori
+window.onclick = (event) => {
+    if (event.target == elements.modal) closeModal();
+};
