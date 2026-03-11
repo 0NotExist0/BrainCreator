@@ -1,66 +1,72 @@
 /**
- * Variabili di stato globali
+ * Brain Creator - Logic Engine
+ * Gestisce l'interazione tra UI e simulazione Google Drive
  */
+
 let isConnectedToDrive = false;
-const DRIVE_FILE_NAME = "ai_brain_config.json";
+
+// Riferimenti DOM
+const logOutput = document.getElementById('log-output');
+const driveStatus = document.getElementById('drive-status');
+const statusText = document.getElementById('status-text');
+const btnCreate = document.getElementById('create-btn');
 
 /**
- * Metodo per simulare la connessione a Google Drive
- * In un'app reale, qui useresti gapi.auth2
+ * Metodo per aggiungere log al terminale di sistema
  */
-function connectToDrive() {
-    addLog("Richiesta autorizzazione Google Drive...");
-    
-    // Simuliamo il popup di Google
-    setTimeout(() => {
-        isConnectedToDrive = true;
-        addLog("Accesso effettuato: Benvenuto utente@gmail.com");
-        document.getElementById('drive-status').textContent = "Connesso a Drive";
-        document.getElementById('drive-status').style.color = "#34a853";
-    }, 1500);
+function addLog(msg) {
+    const p = document.createElement('div');
+    p.textContent = `> [${new Date().toLocaleTimeString()}] ${msg}`;
+    logOutput.appendChild(p);
+    logOutput.scrollTop = logOutput.scrollHeight;
 }
 
 /**
- * Metodo completo per salvare il 'Cervello' come file virtuale
- * Questo metodo prepara l'oggetto JSON da inviare al cloud
+ * Metodo per gestire l'autenticazione simulata con Google Drive
  */
-function uploadBrainToDrive() {
+function connectDrive() {
+    addLog("Avvio handshake con le API di Google...");
+    
+    setTimeout(() => {
+        isConnectedToDrive = true;
+        driveStatus.textContent = "Stato: Connesso (Account Google)";
+        driveStatus.style.color = "#34a853";
+        addLog("Accesso a Google Drive autorizzato.");
+        statusText.textContent = "Pronto per la sincronizzazione.";
+    }, 1200);
+}
+
+/**
+ * Metodo principale per salvare la configurazione del cervello su Drive
+ */
+function syncBrainToDrive() {
     if (!isConnectedToDrive) {
-        addLog("ERRORE: Devi prima connettere il tuo account Google Drive.");
+        addLog("ERRORE: Connessione a Drive richiesta per l'hosting.");
         return;
     }
 
-    const brainData = {
-        id: Date.now(),
-        name: document.getElementById('brain-name').value || "Default Brain",
-        role: document.getElementById('brain-role').value,
-        temperature: document.getElementById('temp-slider').value,
-        version: "1.0.4"
-    };
+    const brainName = document.getElementById('brain-name').value || "Unnamed_Brain";
+    const brainRole = document.getElementById('brain-role').value;
+    
+    btnCreate.disabled = true;
+    btnCreate.textContent = "Sincronizzazione...";
+    addLog(`Generazione file di configurazione: ${brainName}.json`);
 
-    addLog(`Preparazione file: ${DRIVE_FILE_NAME}...`);
+    // Simulazione processo di upload cloud
+    setTimeout(() => addLog("Allocazione spazio su Google Drive..."), 800);
+    setTimeout(() => addLog("Invio pacchetti neurali al server remoto..."), 1800);
 
-    // Simulazione del caricamento multipart/form-data alle API di Google
     setTimeout(() => {
-        addLog(`Sincronizzazione completata: '${DRIVE_FILE_NAME}' aggiornato.`);
-        console.log("Oggetto inviato al Cloud:", JSON.stringify(brainData, null, 2));
+        addLog(`SUCCESSO: Il cervello '${brainName}' è ospitato su Drive.`);
+        statusText.textContent = `Ospitato su Drive: ${brainName}`;
+        btnCreate.disabled = false;
+        btnCreate.textContent = "Aggiorna Configurazione";
         
-        // Feedback visivo
-        const ring = document.querySelector('.pulse-ring');
-        ring.style.boxShadow = "0 0 20px #34a853";
-        statusText.textContent = "Sincronizzato con Drive";
-    }, 2000);
+        // Feedback visivo nel canvas
+        document.querySelector('.pulse-ring').style.background = "#34a853";
+    }, 3500);
 }
 
-/**
- * Event Listener per il nuovo bottone Drive
- * (Assicurati di aggiungere <button id="drive-connect"> nell'HTML)
- */
-document.addEventListener('DOMContentLoaded', () => {
-    const btnConnect = document.getElementById('drive-connect');
-    if(btnConnect) {
-        btnConnect.addEventListener('click', connectToDrive);
-    }
-    
-    document.getElementById('create-btn').addEventListener('click', uploadBrainToDrive);
-});
+// Inizializzazione Event Listeners
+document.getElementById('drive-connect').addEventListener('click', connectDrive);
+btnCreate.addEventListener('click', syncBrainToDrive);
