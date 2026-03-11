@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Brain Creator | Cloud Drive Pro</title>
+    <title>AI Brain Creator | Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -24,32 +24,31 @@
             <div class="config-section">
                 <div class="input-group">
                     <label>Nome del Cervello</label>
-                    <input type="text" id="brain-name" placeholder="es. Brain-Alpha-9">
+                    <input type="text" id="brain-name" placeholder="es. Brain-Alpha">
                 </div>
                 
                 <div class="input-group">
                     <label>Tipo di Intelligenza</label>
                     <select id="brain-role">
-                        <option value="assistant">Assistente Personale</option>
-                        <option value="researcher">Ricercatore Scientifico</option>
-                        <option value="creative">Scrittore Creativo</option>
+                        <option value="assistant">Assistente Analitico</option>
+                        <option value="creative">Genio Creativo</option>
+                        <option value="coder">Sviluppatore Esperto</option>
                     </select>
                 </div>
 
                 <div class="input-group">
-                    <label>Temperatura Neurale</label>
+                    <label>Creatività (Temp)</label>
                     <input type="range" id="temp-slider" min="0" max="100" value="70">
                 </div>
             </div>
 
             <div id="upload-progress" class="progress-container" style="display: none;">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="fill-bar"></div>
-                </div>
+                <div class="progress-bar"><div class="progress-fill" id="fill-bar"></div></div>
                 <span class="progress-text">Caricamento su Cloud...</span>
             </div>
 
             <button id="create-btn" class="primary-btn">Salva Cervello su Drive</button>
+            <button id="launch-btn" class="primary-btn pulse-btn" style="display: none; background: #17c964;">Avvia Interfaccia Neurale ➤</button>
         </aside>
 
         <main class="main-content">
@@ -57,13 +56,13 @@
                 <div class="status-monitor">
                     <div class="pulse-ring" id="main-ring"></div>
                     <h1 id="status-title">Sistema in Standby</h1>
-                    <p id="status-desc">Connetti il tuo account Drive per iniziare la creazione.</p>
+                    <p id="status-desc">Configura e salva il cervello per attivarlo.</p>
                 </div>
 
                 <div class="terminal">
-                    <div class="terminal-header">Sistema Centrale v1.0.5</div>
+                    <div class="terminal-header"><span>Console di Deploy v2.0</span></div>
                     <div id="log-output" class="log-content">
-                        > Inizializzazione protocolli Google...
+                        > In attesa di input dell'utente...
                     </div>
                 </div>
             </div>
