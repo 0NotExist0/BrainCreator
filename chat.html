@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Brain | Neural Interface</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body class="chat-mode">
+    <div class="chat-layout">
+        <header class="chat-topbar">
+            <div class="brain-info">
+                <div class="status-dot"></div>
+                <h2 id="active-brain-name">Caricamento...</h2>
+                <span id="active-brain-role" class="badge">Ruolo</span>
+            </div>
+            <button id="exit-btn" class="secondary-btn">Torna alla Dashboard</button>
+        </header>
+
+        <main class="chat-messages-container" id="chat-box">
+            <div class="ai-msg">
+                <div class="msg-avatar">AI</div>
+                <div class="msg-text">Connessione neurale stabilita. In attesa di direttive.</div>
+            </div>
+        </main>
+
+        <footer class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Invia un messaggio al cervello neurale..." autocomplete="off">
+            <button id="send-msg-btn" class="primary-btn send-btn">Invia</button>
+        </footer>
+    </div>
+    
+    <script src="chat.js"></script>
+</body>
+</html>
