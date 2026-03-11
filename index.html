@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Brain Creator | Dashboard</title>
+    <title>AI Brain Creator | Cloud Drive Edition</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
         <aside class="sidebar">
+            <h2>Cloud Storage</h2>
+            <div class="drive-integration">
+                <button id="drive-connect" class="secondary-btn">Connetti Google Drive</button>
+                <span id="drive-status">Stato: Disconnesso</span>
+            </div>
+
+            <hr class="separator">
+
             <h2>Brain Config</h2>
             <div class="input-group">
                 <label for="brain-name">Nome del Cervello</label>
-                <input type="text" id="brain-name" placeholder="Es: Alpha-1...">
+                <input type="text" id="brain-name" placeholder="Es: Neural-X...">
             </div>
             <div class="input-group">
                 <label for="brain-role">Ruolo / Personalità</label>
@@ -27,25 +35,25 @@
                 <label for="temp-slider">Temperatura (Creatività)</label>
                 <input type="range" id="temp-slider" min="0" max="100" value="70">
             </div>
-            <button id="create-btn" class="primary-btn">Inizializza Cervello</button>
+            <button id="create-btn" class="primary-btn">Sincronizza su Drive</button>
         </aside>
 
         <main class="main-content">
             <header>
                 <h1>AI Brain <span class="highlight">Creator</span></h1>
-                <p>Configura e addestra il tuo agente neurale personalizzato.</p>
+                <p>Ospita il tuo agente neurale direttamente sul tuo Google Drive personale.</p>
             </header>
 
             <div class="canvas-area">
                 <div id="brain-status" class="status-card">
                     <div class="pulse-ring"></div>
-                    <p id="status-text">In attesa di configurazione...</p>
+                    <p id="status-text">In attesa di connessione cloud...</p>
                 </div>
                 
                 <div class="terminal">
-                    <div class="terminal-header">Logs di Sistema</div>
+                    <div class="terminal-header">Sistema di Backup Cloud</div>
                     <div id="log-output" class="log-content">
-                        > Sistema pronto. Inserire parametri...
+                        > Pronto per la connessione...
                     </div>
                 </div>
             </div>
