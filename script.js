@@ -1,63 +1,66 @@
-// Selezioniamo gli elementi del DOM
-const createBtn = document.getElementById('create-btn');
-const logOutput = document.getElementById('log-output');
-const statusText = document.getElementById('status-text');
-const brainNameInput = document.getElementById('brain-name');
-const brainRoleSelect = document.getElementById('brain-role');
+/**
+ * Variabili di stato globali
+ */
+let isConnectedToDrive = false;
+const DRIVE_FILE_NAME = "ai_brain_config.json";
 
 /**
- * Funzione per aggiungere un messaggio al terminale simulato
- * @param {string} message - Il testo da mostrare
+ * Metodo per simulare la connessione a Google Drive
+ * In un'app reale, qui useresti gapi.auth2
  */
-function addLog(message) {
-    const entry = document.createElement('div');
-    entry.textContent = `> ${new Date().toLocaleTimeString()}: ${message}`;
-    logOutput.appendChild(entry);
-    logOutput.scrollTop = logOutput.scrollHeight;
+function connectToDrive() {
+    addLog("Richiesta autorizzazione Google Drive...");
+    
+    // Simuliamo il popup di Google
+    setTimeout(() => {
+        isConnectedToDrive = true;
+        addLog("Accesso effettuato: Benvenuto utente@gmail.com");
+        document.getElementById('drive-status').textContent = "Connesso a Drive";
+        document.getElementById('drive-status').style.color = "#34a853";
+    }, 1500);
 }
 
 /**
- * Metodo principale per l'inizializzazione del "Cervello"
+ * Metodo completo per salvare il 'Cervello' come file virtuale
+ * Questo metodo prepara l'oggetto JSON da inviare al cloud
  */
-function initializeBrain() {
-    const name = brainNameInput.value.trim() || "Senza Nome";
-    const role = brainRoleSelect.value;
-
-    if (name === "Senza Nome") {
-        addLog("Errore: Inserire un nome valido prima dell'inizializzazione.");
+function uploadBrainToDrive() {
+    if (!isConnectedToDrive) {
+        addLog("ERRORE: Devi prima connettere il tuo account Google Drive.");
         return;
     }
 
-    // Reset UI
-    createBtn.disabled = true;
-    createBtn.textContent = "Inizializzazione...";
-    statusText.textContent = `Creazione di ${name}...`;
+    const brainData = {
+        id: Date.now(),
+        name: document.getElementById('brain-name').value || "Default Brain",
+        role: document.getElementById('brain-role').value,
+        temperature: document.getElementById('temp-slider').value,
+        version: "1.0.4"
+    };
 
-    // Sequenza di log simulata (Simulazione processo IA)
-    addLog(`Avvio protocollo ${name}...`);
-    
-    setTimeout(() => {
-        addLog(`Caricamento moduli: ${role.toUpperCase()}...`);
-    }, 1000);
+    addLog(`Preparazione file: ${DRIVE_FILE_NAME}...`);
 
+    // Simulazione del caricamento multipart/form-data alle API di Google
     setTimeout(() => {
-        addLog("Allocazione neurale completata al 45%...");
-    }, 2500);
-
-    setTimeout(() => {
-        addLog("Sincronizzazione Knowledge Base in corso...");
-    }, 4000);
-
-    setTimeout(() => {
-        addLog(`SUCCESSO: Cervello '${name}' è ora online.`);
-        statusText.textContent = `Stato: Online (${name})`;
-        createBtn.disabled = false;
-        createBtn.textContent = "Aggiorna Parametri";
+        addLog(`Sincronizzazione completata: '${DRIVE_FILE_NAME}' aggiornato.`);
+        console.log("Oggetto inviato al Cloud:", JSON.stringify(brainData, null, 2));
         
-        // Cambio colore per feedback visivo
-        document.querySelector('.pulse-ring').style.background = '#00ff00';
-    }, 6000);
+        // Feedback visivo
+        const ring = document.querySelector('.pulse-ring');
+        ring.style.boxShadow = "0 0 20px #34a853";
+        statusText.textContent = "Sincronizzato con Drive";
+    }, 2000);
 }
 
-// Event Listeners
-createBtn.addEventListener('click', initializeBrain);
+/**
+ * Event Listener per il nuovo bottone Drive
+ * (Assicurati di aggiungere <button id="drive-connect"> nell'HTML)
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const btnConnect = document.getElementById('drive-connect');
+    if(btnConnect) {
+        btnConnect.addEventListener('click', connectToDrive);
+    }
+    
+    document.getElementById('create-btn').addEventListener('click', uploadBrainToDrive);
+});
